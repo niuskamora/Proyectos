@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListEmpleadoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <p:growl id="growl" showDetail="true" sticky="true" />
+            
+            <h:panelGroup id="formulario">
+                
+                <p:panel id="panelcrear" header="#{bundle.ListPanelCrear}" closable="false" collapsed="true" toggleable="true">
+                    <h:form prependId="false">
+                        <h:panelGrid columns="2">
+                            <h:outputText value="#{bundle.ListCedulaEmpleado}"></h:outputText>
+                            <h:inputText value="#{empleadoController.selected.cedula}"></h:inputText>
+                            <h:outputText value="#{bundle.ListNombreEmpleado}"></h:outputText>
+                            <h:inputText value="#{empleadoController.selected.nombre}"></h:inputText>
+                            <h:outputText value="#{bundle.ListApellidoEmpleado}"></h:outputText>
+                            <h:inputText value="#{empleadoController.selected.apellido}"></h:inputText>
+                            <h:outputText value="#{bundle.ListSueldoEmpleado}"></h:outputText>
+                            <h:inputText value="#{empleadoController.selected.sueldo}"></h:inputText>
+                            <h:outputText value="#{bundle.ListEmpleadoTitle_departamentoid}"></h:outputText>
+                            <p:selectOneMenu value="#{empleadoController.departamentoseleccionado}">
+                                <f:selectItems value="#{empleadoController.departamentos}" var="dep" itemLabel="#{dep.nombre}" itemValue="#{dep}"></f:selectItems>
+                            </p:selectOneMenu>
+                            <h:outputText value="#{bundle.ListEmpleadoTitle_cargoid}"/>
+                            <p:selectOneMenu value="#{empleadoController.cargoseleccionado}">
+                                <f:selectItems value="#{empleadoController.cargos}" var="car" itemLabel="#{car.nombre}" itemValue="#{car}"></f:selectItems>
+                            </p:selectOneMenu>
+                            <p:commandButton value="#{bundle.ListBotonCrear}" update="@form :paneltable" actionListener="#{empleadoController.create}"></p:commandButton>
+                        </h:panelGrid>
+                    </h:form>
+                </p:panel>
+                
+                
+                <p:panel id="panelbuscar" header="#{bundle.ListPanelBuscar}" closable="false"  collapsed="true" toggleable="true">
+                    <h:form prependId="false">
+                        <h:panelGrid columns="2">
+                            <h:outputText value="#{bundle.ListCedulaEmpleado}"></h:outputText>
+                            <h:inputText value="#{empleadoController.buscar}"></h:inputText>
+                            <p:commandButton value="#{bundle.ListBotonBuscar}" update="@form :res"  actionListener="#{empleadoController.busqueda}"></p:commandButton>
+                        </h:panelGrid>
+                    </h:form>
+                    
+                    <h:panelGroup id="res">
+                        <br/>
+                        <h3>RESULTADO DE LA BUSQUEDA</h3>
+                        <h:outputText value="Id del Empleado: #{empleadoController.cedula.empleadoid}" />
+                        <br/>
+                        <h:outputText value="Cedula: #{empleadoController.cedula.cedula}" />
+                        <br/>
+                        <h:outputText value="Nombre: #{empleadoController.cedula.nombre}" />
+                        <br/>
+                        <h:outputText value="Apellido: #{empleadoController.cedula.apellido}" />
+                        <br/>
+                        <h:outputText value="Sueldo: #{empleadoController.cedula.sueldo}" />
+                        <br/>
+                        <h:outputText value="Departamento: #{empleadoController.cedula.departamentoid.nombre}" />
+                        <br/>
+                        <h:outputText value="Apellido: #{empleadoController.cedula.cargoid.nombre}" />
+                    </h:panelGroup>
+                    
+                </p:panel>
+                
+            </h:panelGroup>
+            
+            
+            <h:panelGroup id="paneltable">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListEmpleadoEmpty}" rendered="#{empleadoController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{empleadoController.items.rowCount > 0}">
+                    
+                   <p:dataTable var="item" value="#{empleadoController.lazyModel}" paginator="true" rows="10"  
+                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
+                 rowsPerPageTemplate="5,10,15" id="carTable" lazy="true" editable="true">
+                       
+                       <p:ajax event="rowEdit" listener="#{empleadoController.onEdit}"  />  
+                       <p:ajax event="rowEditCancel" listener="#{empleadoController.onCancel}"  />
+                       
+                    <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEmpleadoTitle_empleadoid}"/>
+                            </f:facet>
+                        <h:outputText value="#{item.empleadoid}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEmpleadoTitle_cedula}"/>
+                            </f:facet>
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{item.cedula}"/>
+                                </f:facet>
+                                <f:facet name="input">  
+                                    <p:inputText value="#{item.cedula}"/>  
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEmpleadoTitle_nombre}"/>
+                            </f:facet>
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{item.nombre}"/>
+                                </f:facet>
+                                <f:facet name="input">  
+                                    <p:inputText value="#{item.nombre}"/>  
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEmpleadoTitle_apellido}"/>
+                            </f:facet>
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{item.apellido}"/>
+                                </f:facet>
+                                <f:facet name="input">  
+                                    <p:inputText value="#{item.apellido}"/>  
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEmpleadoTitle_sueldo}"/>
+                            </f:facet>
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{item.sueldo}"/>
+                                </f:facet>
+                                <f:facet name="input">  
+                                    <p:inputText value="#{item.sueldo}"/>  
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEmpleadoTitle_departamentoid}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.departamentoid.nombre}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEmpleadoTitle_cargoid}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cargoid.nombre}"/>
+                        </p:column>
+                       <p:column style="width:6%">  
+                            <p:rowEditor />  
+                        </p:column>
+                        <p:column style="width:6%">  
+                            <p:commandLink action="#{empleadoController.eliminarEmpleado()}" update="@form :paneltable :growl">
+                                <f:setPropertyActionListener target="#{empleadoController.current}" value="#{item}"></f:setPropertyActionListener> 
+                                    <p:graphicImage value="/resources/Image/papelera.gif"></p:graphicImage> 
+                            </p:commandLink>  
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{empleadoController.prepareCreate}" value="#{bundle.ListEmpleadoCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListEmpleadoIndexLink}"/>
+            </h:form>
+          </h:panelGroup>
+        </ui:define>
+    </ui:composition>
+
+</html>

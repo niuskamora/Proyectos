@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateProyectoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateProyectoLabel_proyectoid}" for="proyectoid" />
+                    <h:inputText id="proyectoid" value="#{proyectoController.selected.proyectoid}" title="#{bundle.CreateProyectoTitle_proyectoid}" required="true" requiredMessage="#{bundle.CreateProyectoRequiredMessage_proyectoid}"/>
+                    <h:outputLabel value="#{bundle.CreateProyectoLabel_nombre}" for="nombre" />
+                    <h:inputText id="nombre" value="#{proyectoController.selected.nombre}" title="#{bundle.CreateProyectoTitle_nombre}" />
+                    <h:outputLabel value="#{bundle.CreateProyectoLabel_empresa}" for="empresa" />
+                    <h:inputText id="empresa" value="#{proyectoController.selected.empresa}" title="#{bundle.CreateProyectoTitle_empresa}" />
+                    <h:outputLabel value="#{bundle.CreateProyectoLabel_empleadoid}" for="empleadoid" />
+                    <h:selectOneMenu id="empleadoid" value="#{proyectoController.selected.empleadoid}" title="#{bundle.CreateProyectoTitle_empleadoid}" >
+                        <f:selectItems value="#{empleadoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{proyectoController.create}" value="#{bundle.CreateProyectoSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{proyectoController.prepareList}" value="#{bundle.CreateProyectoShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateProyectoIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

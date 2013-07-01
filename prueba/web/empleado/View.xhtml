@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewEmpleadoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewEmpleadoLabel_empleadoid}"/>
+                    <h:outputText value="#{empleadoController.selected.empleadoid}" title="#{bundle.ViewEmpleadoTitle_empleadoid}"/>
+                    <h:outputText value="#{bundle.ViewEmpleadoLabel_cedula}"/>
+                    <h:outputText value="#{empleadoController.selected.cedula}" title="#{bundle.ViewEmpleadoTitle_cedula}"/>
+                    <h:outputText value="#{bundle.ViewEmpleadoLabel_nombre}"/>
+                    <h:outputText value="#{empleadoController.selected.nombre}" title="#{bundle.ViewEmpleadoTitle_nombre}"/>
+                    <h:outputText value="#{bundle.ViewEmpleadoLabel_apellido}"/>
+                    <h:outputText value="#{empleadoController.selected.apellido}" title="#{bundle.ViewEmpleadoTitle_apellido}"/>
+                    <h:outputText value="#{bundle.ViewEmpleadoLabel_sueldo}"/>
+                    <h:outputText value="#{empleadoController.selected.sueldo}" title="#{bundle.ViewEmpleadoTitle_sueldo}"/>
+                    <h:outputText value="#{bundle.ViewEmpleadoLabel_departamentoid}"/>
+                    <h:outputText value="#{empleadoController.selected.departamentoid}" title="#{bundle.ViewEmpleadoTitle_departamentoid}"/>
+                    <h:outputText value="#{bundle.ViewEmpleadoLabel_cargoid}"/>
+                    <h:outputText value="#{empleadoController.selected.cargoid}" title="#{bundle.ViewEmpleadoTitle_cargoid}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{empleadoController.destroyAndView}" value="#{bundle.ViewEmpleadoDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewEmpleadoEditLink}"/>
+                <br />
+                <h:commandLink action="#{empleadoController.prepareCreate}" value="#{bundle.ViewEmpleadoCreateLink}" />
+                <br />
+                <h:commandLink action="#{empleadoController.prepareList}" value="#{bundle.ViewEmpleadoShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewEmpleadoIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

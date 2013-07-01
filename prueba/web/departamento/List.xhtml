@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListDepartamentoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <p:growl id="growl" showDetail="true" sticky="true" />
+            
+            <h:panelGroup id="formulario">
+                
+                <p:panel id="panelcrear" header="#{bundle.ListPanelCrear}" closable="false" collapsed="true" toggleable="true">
+                    <h:form prependId="false">
+                        <h:panelGrid columns="2">
+                            <h:outputText value="#{bundle.ListNombreDepartamento}"></h:outputText>
+                            <h:inputText value="#{departamentoController.selected.nombre}"></h:inputText>
+                            <h:outputText value="#{bundle.ListDescripcionDepartamento}"></h:outputText>
+                            <h:inputText value="#{departamentoController.selected.descripcion}"></h:inputText>
+                            <p:commandButton value="#{bundle.ListBotonCrear}" update="@form :paneltable" actionListener="#{departamentoController.create}"></p:commandButton>
+                        </h:panelGrid>
+                    </h:form>
+                </p:panel>
+                
+                <p:panel id="panelbuscar" header="#{bundle.ListPanelBuscar}" closable="false" collapsed="true" toggleable="true">
+                    <h:form prependId="false">
+                        <h:panelGrid columns="2">
+                            <h:outputText value="#{bundle.ListNombreDepartamento}"></h:outputText>
+                            <h:inputText value="#{departamentoController.buscar}"></h:inputText>
+                            <p:commandButton value="#{bundle.ListBotonBuscar}" update="@form :res"  actionListener="#{departamentoController.busqueda}"></p:commandButton>
+                        </h:panelGrid>
+                    </h:form>
+                    
+                    <h:panelGroup id="res">
+                        <br/>
+                        <h3>RESULTADO DE LA BUSQUEDA</h3>
+                        <h:outputText value="Id del Departamento: #{departamentoController.descripcion.departamentoid}" />
+                        <br/>
+                        <h:outputText value="   Nombre: #{departamentoController.descripcion.nombre}" />
+                        <br/>
+                        <h:outputText value="   Descripción: #{departamentoController.descripcion.descripcion}" />
+                    </h:panelGroup>
+                    
+                </p:panel>
+                
+            </h:panelGroup>
+            
+            <h:panelGroup id="paneltable">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListDepartamentoEmpty}" rendered="#{departamentoController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{departamentoController.items.rowCount > 0}">
+                    
+                    <p:dataTable var="item" value="#{departamentoController.lazyModel}" paginator="true" rows="10"  
+                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
+                 rowsPerPageTemplate="5,10,15" id="carTable" lazy="true" editable="true">
+                        
+                        <p:ajax event="rowEdit" listener="#{departamentoController.onEdit}"  />  
+                        <p:ajax event="rowEditCancel" listener="#{departamentoController.onCancel}"  />
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListDepartamentoTitle_departamentoid}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.departamentoid}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListDepartamentoTitle_nombre}"/>
+                            </f:facet>
+                           <p:cellEditor>  
+                            <f:facet name="output">
+                                <h:outputText value="#{item.nombre}"/>
+                             </f:facet>
+                            <f:facet name="input">  
+                                <p:inputText value="#{item.nombre}"/>  
+                            </f:facet>
+                          </p:cellEditor>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListDepartamentoTitle_descripcion}"/>
+                            </f:facet>
+                           <p:cellEditor>  
+                            <f:facet name="output">
+                                <h:outputText value="#{item.descripcion}"/>
+                             </f:facet>
+                            <f:facet name="input">  
+                                <p:inputText value="#{item.descripcion}"/>  
+                            </f:facet>
+                         </p:cellEditor>
+                        </p:column>
+                        <p:column style="width:6%">  
+                            <p:rowEditor />  
+                        </p:column>
+                        <p:column style="width:6%">  
+                            <p:commandLink action="#{departamentoController.eliminarCargo()}" update="@form :paneltable :growl">
+                                <f:setPropertyActionListener target="#{departamentoController.current}" value="#{item}"></f:setPropertyActionListener> 
+                                    <p:graphicImage value="/resources/Image/papelera.gif"></p:graphicImage> 
+                            </p:commandLink>  
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{departamentoController.prepareCreate}" value="#{bundle.ListDepartamentoCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListDepartamentoIndexLink}"/>
+            </h:form>
+          </h:panelGroup>
+            
+        </ui:define>
+    </ui:composition>
+
+</html>
