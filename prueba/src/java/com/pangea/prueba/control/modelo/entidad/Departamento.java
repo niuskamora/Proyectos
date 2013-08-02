@@ -41,15 +41,15 @@ public class Departamento implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "INCREMENTO_ID_DEPARTAMENTO")
-    @SequenceGenerator(name = "INCREMENTO_ID_DEPARTAMENTO", sequenceName = "INCREMENTO_ID_DEPARTAMENTO", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "DEPARTAMENTOSEQ")
+    @SequenceGenerator(name = "DEPARTAMENTOSEQ", sequenceName = "DEPARTAMENTO_SEQ", allocationSize = 1)
     @Basic(optional = false)
     @Column(name = "DEPARTAMENTOID")
     private BigDecimal departamentoid;
     @Size(max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
-    @Size(max = 100)
+    @Size(max = 120)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @OneToMany(mappedBy = "departamentoid", fetch = FetchType.LAZY)

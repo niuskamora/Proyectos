@@ -37,30 +37,28 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Empleado.findAll", query = "SELECT e FROM Empleado e"),
     @NamedQuery(name = "Empleado.findByEmpleadoid", query = "SELECT e FROM Empleado e WHERE e.empleadoid = :empleadoid"),
-    @NamedQuery(name = "Empleado.findByCedula", query = "SELECT e FROM Empleado e WHERE e.cedula = :cedula"),
     @NamedQuery(name = "Empleado.findByNombre", query = "SELECT e FROM Empleado e WHERE e.nombre = :nombre"),
     @NamedQuery(name = "Empleado.findByApellido", query = "SELECT e FROM Empleado e WHERE e.apellido = :apellido"),
+    @NamedQuery(name = "Empleado.findByDireccion", query = "SELECT e FROM Empleado e WHERE e.direccion = :direccion"),
     @NamedQuery(name = "Empleado.findBySueldo", query = "SELECT e FROM Empleado e WHERE e.sueldo = :sueldo")})
 public class Empleado implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "INCREMENTO_ID_EMPLEADO")
-    @SequenceGenerator(name = "INCREMENTO_ID_EMPLEADO", sequenceName = "INCREMENTO_ID_EMPLEADO", allocationSize = 1)
     @Basic(optional = false)
     @Column(name = "EMPLEADOID")
     private BigDecimal empleadoid;
-    @Basic(optional = false)
-    @Column(name = "CEDULA")
-    private BigInteger cedula;
     @Size(max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
     @Size(max = 30)
     @Column(name = "APELLIDO")
     private String apellido;
+    @Size(max = 100)
+    @Column(name = "DIRECCION")
+    private String direccion;
     @Column(name = "SUELDO")
-    private Double sueldo;
+    private BigInteger sueldo;
     @JoinColumn(name = "DEPARTAMENTOID", referencedColumnName = "DEPARTAMENTOID")
     @ManyToOne(fetch = FetchType.LAZY)
     private Departamento departamentoid;
@@ -77,25 +75,12 @@ public class Empleado implements Serializable {
         this.empleadoid = empleadoid;
     }
 
-    public Empleado(BigDecimal empleadoid, BigInteger cedula) {
-        this.empleadoid = empleadoid;
-        this.cedula = cedula;
-    }
-
     public BigDecimal getEmpleadoid() {
         return empleadoid;
     }
 
     public void setEmpleadoid(BigDecimal empleadoid) {
         this.empleadoid = empleadoid;
-    }
-
-    public BigInteger getCedula() {
-        return cedula;
-    }
-
-    public void setCedula(BigInteger cedula) {
-        this.cedula = cedula;
     }
 
     public String getNombre() {
@@ -114,11 +99,19 @@ public class Empleado implements Serializable {
         this.apellido = apellido;
     }
 
-    public Double getSueldo() {
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public BigInteger getSueldo() {
         return sueldo;
     }
 
-    public void setSueldo(Double sueldo) {
+    public void setSueldo(BigInteger sueldo) {
         this.sueldo = sueldo;
     }
 
@@ -169,7 +162,7 @@ public class Empleado implements Serializable {
 
     @Override
     public String toString() {
-        return "com.pangea.prueba.control.modelo.entidad.Empleado[ empleadoid=" + empleadoid + " ]";
+        return "com.pangea.modelo.entidades.Empleado[ empleadoid=" + empleadoid + " ]";
     }
     
 }

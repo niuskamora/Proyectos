@@ -47,4 +47,9 @@ public class CargoFacade extends AbstractFacade<Cargo> {
        return c;
     }
     
+    public void insertarCargo(Cargo registroc){
+    
+        this.create(registroc);
+    }
+    
 }

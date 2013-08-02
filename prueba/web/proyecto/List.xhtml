@@ -3,65 +3,150 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
             <h:outputText value="#{bundle.ListProyectoTitle}"></h:outputText>
         </ui:define>
         <ui:define name="body">
+            
+            <p:growl id="growl" showDetail="true" sticky="true" />
+            
+            <h:panelGroup id="formulario">
+                
+                <p:panel id="panelcrear" header="#{bundle.ListPanelCrear}" closable="false" collapsed="true" toggleable="true">
+                    <h:form prependId="false">
+                        <h:panelGrid columns="2">
+                            <h:outputText value="#{bundle.ListNombreProyecto}"></h:outputText>
+                            <h:inputText value="#{proyectoController.selected.nombre}"></h:inputText>
+                            <h:outputText value="#{bundle.ListDescripcionProyecto}"></h:outputText>
+                            <h:inputText value="#{proyectoController.selected.descripcion}"></h:inputText>
+                            <h:outputText value="#{bundle.ListEmpleadoTitle_nombre}"/>
+                            <p:selectOneMenu value="#{proyectoController.empleadoseleccionado}">
+                                <f:selectItems value="#{proyectoController.empleados}" 
+                                               var="car" 
+                                               itemLabel="#{car.nombre}" 
+                                               itemValue="#{car}">
+                                </f:selectItems>
+                            </p:selectOneMenu>
+                            <p:commandButton value="#{bundle.ListBotonCrear}" update="@form :paneltable" actionListener="#{proyectoController.create}"></p:commandButton>
+                        </h:panelGrid>
+                    </h:form>
+                </p:panel>
+                
+                
+                <p:panel id="panelbuscar" header="#{bundle.ListPanelBuscar}" closable="false"  collapsed="true" toggleable="true">
+                    <h:form prependId="false">
+                        <h:panelGrid columns="2">
+                            <h:outputText value="#{bundle.ListNombreProyecto}"></h:outputText>
+                            <h:inputText value="#{proyectoController.buscar}"></h:inputText>
+                            <p:commandButton value="#{bundle.ListBotonBuscar}" update="@form :res"  actionListener="#{proyectoController.busqueda}"></p:commandButton>
+                        </h:panelGrid>
+                    </h:form>
+                    
+                    <h:panelGroup id="res">
+                        <br/>
+                        <h3>RESULTADO DE LA BUSQUEDA</h3>
+                        <h:outputText value="Id del Proyecto: #{proyectoController.nombre.proyectoid}" />
+                        <br/>
+                        <h:outputText value="Nombre: #{proyectoController.nombre.nombre}" />
+                        <br/>
+                        <h:outputText value="Descripción: #{proyectoController.nombre.descripcion}" />
+                        <br/>
+                        <h:outputText value="Empleado: #{proyectoController.nombre.empleadoid.nombre}" />
+                        <br/>
+                    </h:panelGroup>
+                    
+                </p:panel>
+                
+            </h:panelGroup>
+            
+            <h:panelGroup id="paneltable">
             <h:form styleClass="jsfcrud_list_form">
                 <h:panelGroup id="messagePanel" layout="block">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
                 <h:outputText escape="false" value="#{bundle.ListProyectoEmpty}" rendered="#{proyectoController.items.rowCount == 0}"/>
                 <h:panelGroup rendered="#{proyectoController.items.rowCount > 0}">
-                    <h:outputText value="#{proyectoController.pagination.pageFirstItem + 1}..#{proyectoController.pagination.pageLastItem + 1}/#{proyectoController.pagination.itemsCount}"/>&nbsp;
-                    <h:commandLink action="#{proyectoController.previous}" value="#{bundle.Previous} #{proyectoController.pagination.pageSize}" rendered="#{proyectoController.pagination.hasPreviousPage}"/>&nbsp;
-                    <h:commandLink action="#{proyectoController.next}" value="#{bundle.Next} #{proyectoController.pagination.pageSize}" rendered="#{proyectoController.pagination.hasNextPage}"/>&nbsp;
-                    <h:dataTable value="#{proyectoController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
-                        <h:column>
+                    
+                    <p:dataTable var="item" value="#{proyectoController.lazyModel}" paginator="true" rows="10"  
+                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
+                 rowsPerPageTemplate="5,10,15" id="carTable" lazy="true" editable="true">
+                        
+                        <p:ajax event="rowEdit" listener="#{proyectoController.onEdit}"  />  
+                        <p:ajax event="rowEditCancel" listener="#{proyectoController.onCancel}"  />
+                       
+                        <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListProyectoTitle_proyectoid}"/>
                             </f:facet>
-                            <h:outputText value="#{item.proyectoid}"/>
-                        </h:column>
-                        <h:column>
+                                <h:outputText value="#{item.proyectoid}"/>
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListProyectoTitle_nombre}"/>
                             </f:facet>
-                            <h:outputText value="#{item.nombre}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListProyectoTitle_empresa}"/>
+                           <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{item.nombre}"/>
                             </f:facet>
-                            <h:outputText value="#{item.empresa}"/>
-                        </h:column>
-                        <h:column>
+                            <f:facet name="input">
+                                <p:inputText value="#{item.nombre}"></p:inputText>
+                            </f:facet>
+                           </p:cellEditor>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListProyectoTitle_descripcion}"/>
+                            </f:facet>
+                           <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{item.descripcion}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{item.descripcion}"/>
+                            </f:facet>
+                           </p:cellEditor>
+                        </p:column>
+                        <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListProyectoTitle_empleadoid}"/>
                             </f:facet>
-                            <h:outputText value="#{item.empleadoid}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
+                          <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{item.empleadoid.nombre}"/>
                             </f:facet>
-                            <h:commandLink action="#{proyectoController.prepareView}" value="#{bundle.ListProyectoViewLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{proyectoController.prepareEdit}" value="#{bundle.ListProyectoEditLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{proyectoController.destroy}" value="#{bundle.ListProyectoDestroyLink}"/>
-                        </h:column>
-                    </h:dataTable>
+                           <f:facet name="input">
+                               <p:selectOneMenu value="#{item.empleadoid}">
+                                <f:selectItems value="#{proyectoController.empleados}" 
+                                               var="car" 
+                                               itemLabel="#{car.nombre}" 
+                                               itemValue="#{car}">
+                                </f:selectItems>
+                            </p:selectOneMenu>
+                           </f:facet>
+                          </p:cellEditor>
+                        </p:column>
+                        
+                        <p:column style="width:6%">  
+                            <p:rowEditor />  
+                        </p:column>
+                        <p:column style="width:6%">  
+                            <p:commandLink action="#{proyectoController.eliminarProyecto()}" update="@form :paneltable :growl">
+                                <f:setPropertyActionListener target="#{proyectoController.current}" value="#{item}"></f:setPropertyActionListener> 
+                                    <p:graphicImage value="/resources/Image/papelera.gif"></p:graphicImage> 
+                            </p:commandLink>  
+                        </p:column>
+                        
+                    </p:dataTable>
                 </h:panelGroup>
                 <br />
-                <h:commandLink action="#{proyectoController.prepareCreate}" value="#{bundle.ListProyectoCreateLink}"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.ListProyectoIndexLink}"/>
+                <p:commandButton action="/index" value="Regresar"></p:commandButton>
             </h:form>
+           </h:panelGroup>
+            
         </ui:define>
     </ui:composition>
 

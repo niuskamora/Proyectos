@@ -19,20 +19,30 @@
                     <h:form prependId="false">
                         <h:panelGrid columns="2">
                             <h:outputText value="#{bundle.ListCedulaEmpleado}"></h:outputText>
-                            <h:inputText value="#{empleadoController.selected.cedula}"></h:inputText>
+                            <h:inputText value="#{empleadoController.selected.empleadoid}"></h:inputText>
                             <h:outputText value="#{bundle.ListNombreEmpleado}"></h:outputText>
                             <h:inputText value="#{empleadoController.selected.nombre}"></h:inputText>
                             <h:outputText value="#{bundle.ListApellidoEmpleado}"></h:outputText>
                             <h:inputText value="#{empleadoController.selected.apellido}"></h:inputText>
+                            <h:outputText value="#{bundle.ListDireccionEmpleado}"></h:outputText>
+                            <h:inputText value="#{empleadoController.selected.direccion}"></h:inputText>
                             <h:outputText value="#{bundle.ListSueldoEmpleado}"></h:outputText>
                             <h:inputText value="#{empleadoController.selected.sueldo}"></h:inputText>
-                            <h:outputText value="#{bundle.ListEmpleadoTitle_departamentoid}"></h:outputText>
-                            <p:selectOneMenu value="#{empleadoController.departamentoseleccionado}">
-                                <f:selectItems value="#{empleadoController.departamentos}" var="dep" itemLabel="#{dep.nombre}" itemValue="#{dep}"></f:selectItems>
-                            </p:selectOneMenu>
                             <h:outputText value="#{bundle.ListEmpleadoTitle_cargoid}"/>
                             <p:selectOneMenu value="#{empleadoController.cargoseleccionado}">
-                                <f:selectItems value="#{empleadoController.cargos}" var="car" itemLabel="#{car.nombre}" itemValue="#{car}"></f:selectItems>
+                                <f:selectItems value="#{empleadoController.cargos}" 
+                                               var="car" 
+                                               itemLabel="#{car.nombre}" 
+                                               itemValue="#{car}">
+                                </f:selectItems>
+                            </p:selectOneMenu>
+                            <h:outputText value="#{bundle.ListEmpleadoTitle_departamentoid}"></h:outputText>
+                            <p:selectOneMenu value="#{empleadoController.departamentoseleccionado}">
+                                <f:selectItems value="#{empleadoController.departamentos}" 
+                                               var="dep" 
+                                               itemLabel="#{dep.nombre}" 
+                                               itemValue="#{dep}">
+                                </f:selectItems>
                             </p:selectOneMenu>
                             <p:commandButton value="#{bundle.ListBotonCrear}" update="@form :paneltable" actionListener="#{empleadoController.create}"></p:commandButton>
                         </h:panelGrid>
@@ -52,9 +62,7 @@
                     <h:panelGroup id="res">
                         <br/>
                         <h3>RESULTADO DE LA BUSQUEDA</h3>
-                        <h:outputText value="Id del Empleado: #{empleadoController.cedula.empleadoid}" />
-                        <br/>
-                        <h:outputText value="Cedula: #{empleadoController.cedula.cedula}" />
+                        <h:outputText value="Cedula: #{empleadoController.cedula.empleadoid}" />
                         <br/>
                         <h:outputText value="Nombre: #{empleadoController.cedula.nombre}" />
                         <br/>
@@ -62,9 +70,9 @@
                         <br/>
                         <h:outputText value="Sueldo: #{empleadoController.cedula.sueldo}" />
                         <br/>
-                        <h:outputText value="Departamento: #{empleadoController.cedula.departamentoid.nombre}" />
+                        <h:outputText value="Cargo: #{empleadoController.cedula.cargoid.nombre}" />
                         <br/>
-                        <h:outputText value="Apellido: #{empleadoController.cedula.cargoid.nombre}" />
+                        <h:outputText value="Departamento: #{empleadoController.cedula.departamentoid.nombre}" />
                     </h:panelGroup>
                     
                 </p:panel>
@@ -87,24 +95,11 @@
                        <p:ajax event="rowEdit" listener="#{empleadoController.onEdit}"  />  
                        <p:ajax event="rowEditCancel" listener="#{empleadoController.onCancel}"  />
                        
-                    <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListEmpleadoTitle_empleadoid}"/>
-                            </f:facet>
-                        <h:outputText value="#{item.empleadoid}"/>
-                        </p:column>
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListEmpleadoTitle_cedula}"/>
                             </f:facet>
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="#{item.cedula}"/>
-                                </f:facet>
-                                <f:facet name="input">  
-                                    <p:inputText value="#{item.cedula}"/>  
-                                </f:facet>
-                            </p:cellEditor>
+                              <h:outputText value="#{item.empleadoid}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
@@ -145,18 +140,47 @@
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
+                       
+                       <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEmpleadoTitle_cargoid}"/>
+                            </f:facet>
+                           <p:cellEditor>
+                           <f:facet name="output">
+                                <h:outputText value="#{item.cargoid.nombre}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:selectOneMenu value="#{item.cargoid}">
+                                <f:selectItems value="#{empleadoController.cargos}" 
+                                               var="car" 
+                                               itemLabel="#{car.nombre}" 
+                                               itemValue="#{car}">
+                                </f:selectItems>
+                            </p:selectOneMenu>
+                            </f:facet>
+                           </p:cellEditor>
+                        </p:column>
+                       
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListEmpleadoTitle_departamentoid}"/>
                             </f:facet>
-                            <h:outputText value="#{item.departamentoid.nombre}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListEmpleadoTitle_cargoid}"/>
+                            <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{item.departamentoid.nombre}"/>
                             </f:facet>
-                            <h:outputText value="#{item.cargoid.nombre}"/>
+                            <f:facet name="input">
+                                <p:selectOneMenu value="#{item.departamentoid}">
+                                    <f:selectItems value="#{empleadoController.departamentos}" 
+                                                   var="dep" 
+                                                   itemLabel="#{dep.nombre}" 
+                                                   itemValue="#{dep}">
+                                    </f:selectItems>
+                                </p:selectOneMenu>
+                            </f:facet>
+                            </p:cellEditor>
                         </p:column>
+                        
                        <p:column style="width:6%">  
                             <p:rowEditor />  
                         </p:column>
@@ -169,10 +193,7 @@
                     </p:dataTable>
                 </h:panelGroup>
                 <br />
-                <h:commandLink action="#{empleadoController.prepareCreate}" value="#{bundle.ListEmpleadoCreateLink}"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.ListEmpleadoIndexLink}"/>
+                <p:commandButton action="/index" value="Regresar"></p:commandButton>
             </h:form>
           </h:panelGroup>
         </ui:define>

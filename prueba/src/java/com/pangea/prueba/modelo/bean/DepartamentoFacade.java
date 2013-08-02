@@ -68,31 +68,6 @@ public class DepartamentoFacade extends AbstractFacade<Departamento> {
         return lista;
     }
    
-    //Promedio Sueldo Departamento JPQL
-    public List<String[]> promedioSueldo(){
-        
-        List<Departamento> listaDepartamento=null;
-        listaDepartamento=em.createNamedQuery("Departamento.findAll").getResultList();
-        
-        double suma=0, promedioSueldo=0;
-        List<String[]> listaJPQL=new ArrayList<String[]>();
-        
-        for (int i = 0; i < listaDepartamento.size(); i++) {
-            
-            String[] vect=new String[2];
-            suma=0;
-            
-            for (int j = 0; j < listaDepartamento.get(i).getEmpleadoList().size(); j++) {
-               suma+=listaDepartamento.get(i).getEmpleadoList().get(j).getSueldo();
-            }
-            
-            vect[0]= new String(listaDepartamento.get(i).getNombre());
-            promedioSueldo=suma/listaDepartamento.get(i).getEmpleadoList().size();
-            vect[1]=String.valueOf(promedioSueldo);
-            listaJPQL.add(vect);
-        }
-        return listaJPQL;
-    }
     
     //Cantidad Empleados Departamento SQL
     public List<String[]> cantidadEmpleados(){
@@ -140,6 +115,11 @@ public class DepartamentoFacade extends AbstractFacade<Departamento> {
        c=(Departamento) em.createNamedQuery("Departamento.findByNombre").setParameter("nombre", nombre).getSingleResult();
        
        return c;
+    }
+    
+    public void insertarDepartamento(Departamento registrod){
+    
+        this.create(registrod);
     }
     
 }

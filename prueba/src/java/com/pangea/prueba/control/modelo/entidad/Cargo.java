@@ -40,15 +40,15 @@ public class Cargo implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "INCREMENTO_ID_CARGO")
-    @SequenceGenerator(name = "INCREMENTO_ID_CARGO", sequenceName = "INCREMENTO_ID_CARGO", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CARGOSEQ")
+    @SequenceGenerator(name = "CARGOSEQ", sequenceName = "CARGO_SEQ", allocationSize = 1)
     @Basic(optional = false)
     @Column(name = "CARGOID")
     private BigDecimal cargoid;
     @Size(max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
-    @Size(max = 100)
+    @Size(max = 120)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @OneToMany(mappedBy = "cargoid", fetch = FetchType.LAZY, orphanRemoval = true)

@@ -38,23 +38,7 @@ public class EmpleadoFacade extends AbstractFacade<Empleado> {
         return promedioSueldoG;
     }
     
-    //Promedio Sueldo General JPQL
-    public double promedioSueldoGeneralJPQL(){
-        
-        List<Empleado> listaEmpleado=null;
-        
-        listaEmpleado=em.createNamedQuery("Empleado.findAll").getResultList();
-        
-        double suma=0, promedioSueldo=0;
-        
-        for (int i = 0; i < listaEmpleado.size(); i++) {
-            suma+=listaEmpleado.get(i).getSueldo();
-        }
-        
-        promedioSueldo=suma/listaEmpleado.size();
-        
-        return promedioSueldo;
-    }
+   
     
     //Empleado con Departamento y Cargo
     
@@ -103,8 +87,13 @@ public class EmpleadoFacade extends AbstractFacade<Empleado> {
     
        Empleado emp=null;
        
-       emp=(Empleado) em.createNamedQuery("Empleado.findByCedula").setParameter("cedula", cedula).getSingleResult();
+       emp=(Empleado) em.createNamedQuery("Empleado.findByEmpleadoid").setParameter("empleadoid", cedula).getSingleResult();
        
        return emp;
+    }
+    
+     public void insertarEmpleado(Empleado registroe){
+    
+        this.create(registroe);
     }
 }

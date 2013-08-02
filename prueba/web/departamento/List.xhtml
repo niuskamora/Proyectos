@@ -27,7 +27,7 @@
                     </h:form>
                 </p:panel>
                 
-                <p:panel id="panelbuscar" header="#{bundle.ListPanelBuscar}" closable="false" collapsed="true" toggleable="true">
+                <p:panel id="panelbuscar" header="#{bundle.ListPanelBuscar}" closable="false"  collapsed="true" toggleable="true">
                     <h:form prependId="false">
                         <h:panelGrid columns="2">
                             <h:outputText value="#{bundle.ListNombreDepartamento}"></h:outputText>
@@ -109,10 +109,7 @@
                     </p:dataTable>
                 </h:panelGroup>
                 <br />
-                <h:commandLink action="#{departamentoController.prepareCreate}" value="#{bundle.ListDepartamentoCreateLink}"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.ListDepartamentoIndexLink}"/>
+                 <p:commandButton action="/index" value="Regresar"></p:commandButton>
             </h:form>
           </h:panelGroup>
             

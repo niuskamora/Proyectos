@@ -15,23 +15,23 @@
             </h:panelGroup>
             <h:form>
                 <h:panelGrid columns="2">
-                    <h:outputLabel value="#{bundle.EditEmpleadoLabel_empleadoid}" for="empleadoid" />
-                    <h:inputText id="empleadoid" value="#{empleadoController.selected.empleadoid}" title="#{bundle.EditEmpleadoTitle_empleadoid}" required="true" requiredMessage="#{bundle.EditEmpleadoRequiredMessage_empleadoid}"/>
                     <h:outputLabel value="#{bundle.EditEmpleadoLabel_cedula}" for="cedula" />
-                    <h:inputText id="cedula" value="#{empleadoController.selected.cedula}" title="#{bundle.EditEmpleadoTitle_cedula}" required="true" requiredMessage="#{bundle.EditEmpleadoRequiredMessage_cedula}"/>
+                    <h:inputText id="cedula" value="#{empleadoController.selected.empleadoid}" title="#{bundle.EditEmpleadoTitle_cedula}" required="true" requiredMessage="#{bundle.EditEmpleadoRequiredMessage_cedula}"/>
                     <h:outputLabel value="#{bundle.EditEmpleadoLabel_nombre}" for="nombre" />
                     <h:inputText id="nombre" value="#{empleadoController.selected.nombre}" title="#{bundle.EditEmpleadoTitle_nombre}" />
                     <h:outputLabel value="#{bundle.EditEmpleadoLabel_apellido}" for="apellido" />
                     <h:inputText id="apellido" value="#{empleadoController.selected.apellido}" title="#{bundle.EditEmpleadoTitle_apellido}" />
+                    <h:outputLabel value="#{bundle.EditEmpleadoLabel_apellido}" for="direccion" />
+                    <h:inputText id="apellido" value="#{empleadoController.selected.direccion}" title="#{bundle.EditEmpleadoTitle_apellido}" />
                     <h:outputLabel value="#{bundle.EditEmpleadoLabel_sueldo}" for="sueldo" />
                     <h:inputText id="sueldo" value="#{empleadoController.selected.sueldo}" title="#{bundle.EditEmpleadoTitle_sueldo}" />
-                    <h:outputLabel value="#{bundle.EditEmpleadoLabel_departamentoid}" for="departamentoid" />
-                    <h:selectOneMenu id="departamentoid" value="#{empleadoController.selected.departamentoid}" title="#{bundle.EditEmpleadoTitle_departamentoid}" >
-                        <f:selectItems value="#{departamentoController.itemsAvailableSelectOne}"/>
-                    </h:selectOneMenu>
                     <h:outputLabel value="#{bundle.EditEmpleadoLabel_cargoid}" for="cargoid" />
                     <h:selectOneMenu id="cargoid" value="#{empleadoController.selected.cargoid}" title="#{bundle.EditEmpleadoTitle_cargoid}" >
                         <f:selectItems value="#{cargoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.EditEmpleadoLabel_departamentoid}" for="departamentoid" />
+                    <h:selectOneMenu id="departamentoid" value="#{empleadoController.selected.departamentoid}" title="#{bundle.EditEmpleadoTitle_departamentoid}" >
+                        <f:selectItems value="#{departamentoController.itemsAvailableSelectOne}"/>
                     </h:selectOneMenu>
                 </h:panelGrid>
                 <h:commandLink action="#{empleadoController.update}" value="#{bundle.EditEmpleadoSaveLink}"/>

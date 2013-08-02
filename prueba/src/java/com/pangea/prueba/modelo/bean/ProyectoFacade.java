@@ -27,4 +27,17 @@ public class ProyectoFacade extends AbstractFacade<Proyecto> {
         super(Proyecto.class);
     }
     
+    public Proyecto todoProyecto(String nombre){
+    
+       Proyecto proy=null;
+       
+       proy=(Proyecto) em.createNamedQuery("Proyecto.findByNombre").setParameter("nombre", nombre).getSingleResult();
+       
+       return proy;
+    }
+    
+     public void insertarProyecto(Proyecto registrop){
+    
+        this.create(registrop);
+    }
 }

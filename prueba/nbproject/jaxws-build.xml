@@ -32,4 +32,48 @@
                 JAX-WS WSIMPORT SECTION
                 ===================
             -->
+    <target name="wsimport-init" depends="init">
+        <fail if="${wsimport.bad.version}" message="WsImport ant task defined in the classpath ${j2ee.platform.wsimport.classpath} has a serious bug. See http://wiki.netbeans.org/MetroIssue for details."/>
+        <mkdir dir="${build.generated.sources.dir}/jax-ws"/>
+        <property name="j2ee.platform.wsimport.classpath" value="${libs.jaxws21.classpath}"/>
+        <taskdef name="wsimport" classname="com.sun.tools.ws.ant.WsImport">
+            <classpath path="${java.home}/../lib/tools.jar:${j2ee.platform.wsimport.classpath}:${javac.classpath}"/>
+        </taskdef>
+        <condition property="conf-dir" value="${conf.dir}/" else="">
+            <isset property="conf.dir"/>
+        </condition>
+    </target>
+    <target name="wsimport-client-servicioweb" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/servicioweb"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/servicioweb" destdir="${build.generated.dir}/jax-wsCache/servicioweb" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/servicioweb/wsdl/192.168.1.105_14070/PRUEBA/servicioweb.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" wsdlLocation="http://192.168.1.105:14070/PRUEBA/servicioweb?WSDL" xnocompile="true" xendorsed="true" package="com.pangea.prueba.control.servicio">
+            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/servicioweb/wsdl/192.168.1.105_14070/PRUEBA/servicioweb.wsdl"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/servicioweb"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/servicioweb">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-servicioweb" depends="-init-project">
+        <delete dir="${build.generated.sources.dir}/jax-ws/com/pangea/prueba/control/servicio"/>
+        <delete dir="${build.generated.dir}/jax-wsCache/servicioweb"/>
+    </target>
+    <target name="wsimport-client-practicaservicio" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/practicaservicio"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/practicaservicio" destdir="${build.generated.dir}/jax-wsCache/practicaservicio" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/practicaservicio/wsdl/192.168.1.101_15362/aplicacion/practicaservicio.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" wsdlLocation="http://192.168.1.101:15362/aplicacion/practicaservicio?WSDL" xnocompile="true" xendorsed="true" package="com.pangea.prueba.control.servicios">
+            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/practicaservicio/wsdl/192.168.1.101_15362/aplicacion/practicaservicio.wsdl"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/practicaservicio"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/practicaservicio">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-practicaservicio" depends="-init-project">
+        <delete dir="${build.generated.sources.dir}/jax-ws/com/pangea/prueba/control/servicios"/>
+        <delete dir="${build.generated.dir}/jax-wsCache/practicaservicio"/>
+    </target>
+    <target name="wsimport-client-generate" depends="wsimport-client-servicioweb, wsimport-client-practicaservicio"/>
 </project>

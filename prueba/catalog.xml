@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://192.168.1.101:14070/PRUEBA/servicioweb?WSDL" uri="src/conf/xml-resources/web-service-references/servicioweb/wsdl/192.168.1.101_14070/PRUEBA/servicioweb.wsdl"/>
+    <system systemId="http://192.168.1.101:14070/PRUEBA/servicioweb?xsd=1" uri="src/conf/xml-resources/web-service-references/servicioweb/wsdl/192.168.1.101_14070/PRUEBA/servicioweb.xsd_1.xsd"/>
+    <system systemId="http://192.168.1.103:14070/PRUEBA/servicioweb?WSDL" uri="src/conf/xml-resources/web-service-references/servicioweb/wsdl/192.168.1.103_14070/PRUEBA/servicioweb.wsdl"/>
+    <system systemId="http://192.168.1.103:14070/PRUEBA/servicioweb?wsdl" uri="src/conf/xml-resources/web-service-references/servicioweb/wsdl/192.168.1.103_14070/PRUEBA/servicioweb.wsdl"/>
+    <system systemId="http://192.168.1.103:14070/PRUEBA/servicioweb?xsd=1" uri="src/conf/xml-resources/web-service-references/servicioweb/wsdl/192.168.1.103_14070/PRUEBA/servicioweb.xsd_1.xsd"/>
+    <system systemId="http://192.168.1.105:14070/PRUEBA/servicioweb?WSDL" uri="src/conf/xml-resources/web-service-references/servicioweb/wsdl/192.168.1.105_14070/PRUEBA/servicioweb.wsdl"/>
+    <system systemId="http://192.168.1.105:14070/PRUEBA/servicioweb?xsd=1" uri="src/conf/xml-resources/web-service-references/servicioweb/wsdl/192.168.1.105_14070/PRUEBA/servicioweb.xsd_1.xsd"/>
+    <system systemId="http://192.168.1.101:15362/aplicacion/practicaservicio?WSDL" uri="src/conf/xml-resources/web-service-references/practicaservicio/wsdl/192.168.1.101_15362/aplicacion/practicaservicio.wsdl"/>
+    <system systemId="http://192.168.1.101:15362/aplicacion/practicaservicio?xsd=1" uri="src/conf/xml-resources/web-service-references/practicaservicio/wsdl/192.168.1.101_15362/aplicacion/practicaservicio.xsd_1.xsd"/>
+    <system systemId="http://192.168.1.101:15362/aplicacion/practicaservicio?xsd=2" uri="src/conf/xml-resources/web-service-references/practicaservicio/wsdl/192.168.1.101_15362/aplicacion/practicaservicio.xsd_2.xsd"/>
+</catalog>

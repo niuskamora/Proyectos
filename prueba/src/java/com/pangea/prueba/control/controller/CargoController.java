@@ -3,10 +3,14 @@ package com.pangea.prueba.control.controller;
 import com.pangea.prueba.control.modelo.entidad.Cargo;
 import com.pangea.prueba.control.controller.util.JsfUtil;
 import com.pangea.prueba.control.controller.util.PaginationHelper;
+import com.pangea.prueba.control.servicio.Servicioweb_Service;
 import com.pangea.prueba.modelo.bean.CargoFacade;
+import com.pangea.prueba.control.servicio.Registroscargo.Fil;
+import com.pangea.prueba.control.servicio.Registroscargo.Fil.Entry;
+import com.pangea.prueba.control.servicios.Practicaservicio_Service;
+
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,6 +28,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.xml.ws.WebServiceRef;
 import org.omg.CORBA.Current;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.ToggleEvent;
@@ -39,6 +44,10 @@ import org.primefaces.model.chart.BubbleChartSeries;
 @SessionScoped
 
 public class CargoController implements Serializable {
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/192.168.1.101_15362/aplicacion/practicaservicio.wsdl")
+    private Practicaservicio_Service service_1;
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/192.168.1.105_14070/PRUEBA/servicioweb.wsdl")
+    private Servicioweb_Service service;
 
     private Cargo current;
     private DataModel items = null;
@@ -63,7 +72,7 @@ public class CargoController implements Serializable {
     
     /** DECLARACION LAZY **/
     private List<Cargo> cargos;
-    private LazyDataModel<Cargo> lazyModel;
+    private LazyDataModel<com.pangea.prueba.control.servicio.Cargo> lazyModel;
     private int pagIndex = 0;
     private Map<String, String> fields = new HashMap<String, String>();
     private String sortF = null;
@@ -309,11 +318,19 @@ public class CargoController implements Serializable {
 
     public String create() {
         try {
-            getFacade().create(current);
+            
+            //Para Crear por Servicios Web
+            com.pangea.prueba.control.servicio.Cargo insert=new com.pangea.prueba.control.servicio.Cargo();
+            insert.setCargoid(current.getCargoid());
+            insert.setNombre(current.getNombre());
+            insert.setDescripcion(current.getDescripcion());
+            this.crearCargo(insert);
+            
             //Llamo al metodo para que recargue cuando creo uno nuevo
             inicializarLazy();
+            
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CargoCreated"));
-            return prepareCreate();
+             return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -458,26 +475,38 @@ public class CargoController implements Serializable {
     
     /** INICIO LAZY**/
     public void inicializarLazy() {
-        lazyModel = new LazyDataModel<Cargo>() {
+        lazyModel = new LazyDataModel<com.pangea.prueba.control.servicio.Cargo>() {
 
             @Override
-            public List<Cargo> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,String> filters) {
+            public List<com.pangea.prueba.control.servicio.Cargo> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,String> filters) {
                 paginacion = pageSize;
-                int cantidad = getFacade().count();
-                if (cantidad > 0) {
-                    pagIndex = first;
-                    fields = filters;
-                    sortF = sortField;
-                    sortB = true;
-                    String cadena = "";
-                    lazyModel.setWrappedData(null);
-                    cantidad = getFacade().count();
-                    lazyModel.setRowCount(cantidad);
-                    return getFacade().findRange(sortF, sortB, new int[]{first, first + pageSize}, filters, cadena);
+                int cantidad = listarCargo();
+                
+               if (cantidad > 0) {
+                   pagIndex = first;
+                   fields = filters;
+                   sortF = sortField;
+                   sortB = true;
+                   String cadena = "";
+                   lazyModel.setWrappedData(null);
+                   cantidad = listarCargo();
+                   lazyModel.setRowCount(cantidad);
+                   List<Integer> lis= new ArrayList();
+                   lis.add(first);
+                   lis.add(first+pageSize);
+                   Fil algo = new Fil();
+                   for (Map.Entry e : filters.entrySet()) {
+                       Entry otro=new Entry();
+                       
+                       otro.setKey(e.getKey().toString());
+                       otro.setValue(e.getValue().toString());
+                       algo.getEntry().add(otro);
+                   }   
+                   
+                   return registroscargo(sortF, sortB, lis, algo, cadena);
 
-                }
-                return null;
-                // return lazymv;
+               }
+               return null;
             }
         };
 
@@ -493,14 +522,14 @@ public class CargoController implements Serializable {
 
     }
 
-    public LazyDataModel<Cargo> getLazyModel() {
+    public LazyDataModel<com.pangea.prueba.control.servicio.Cargo> getLazyModel() {
         if (lazyModel == null) {
             inicializarLazy();
         }
         return lazyModel;
     }
 
-    public void setLazyModel(LazyDataModel<Cargo> lazyModel) {
+    public void setLazyModel(LazyDataModel<com.pangea.prueba.control.servicio.Cargo> lazyModel) {
         this.lazyModel = lazyModel;
     }
 
@@ -526,9 +555,11 @@ public class CargoController implements Serializable {
             getFacade().remove(eliminar);
             mostrarMensaje(0, "Advertencia", "Se Elimino");
         }
+        else{
+            mostrarMensaje(0, "Advertencia", "NO se Elimino");
+        }
         //Llamo al metodo para que recargue cuando elimino
         inicializarLazy();
-        mostrarMensaje(0, "Advertencia", "NO se Elimino");
     }
     
     public void mostrarMensaje(int _opcMensaje, String _cabeceraMensaje, String _cuerpomensaje) {
@@ -552,4 +583,34 @@ public class CargoController implements Serializable {
             }
         }
     }
+
+    private void crearCargo(com.pangea.prueba.control.servicio.Cargo registroCargo) {
+        com.pangea.prueba.control.servicio.Servicioweb port = service.getServiciowebPort();
+        port.crearCargo(registroCargo);
+    }
+
+    private int listarCargo() {
+        com.pangea.prueba.control.servicio.Servicioweb port = service.getServiciowebPort();
+        return port.listarCargo();
+    }
+
+    private java.util.List<com.pangea.prueba.control.servicio.Cargo> registroscargo(java.lang.String sortF, boolean sortB, java.util.List<java.lang.Integer> range, com.pangea.prueba.control.servicio.Registroscargo.Fil fil, java.lang.String cad) {
+        com.pangea.prueba.control.servicio.Servicioweb port = service.getServiciowebPort();
+        return port.registroscargo(sortF, sortB, range, fil, cad);
+    }
+
+    private int contarcargo() {
+        com.pangea.prueba.control.servicios.Practicaservicio port = service_1.getPracticaservicioPort();
+        return port.contarcargo();
+    }
+
+    private java.util.List<com.pangea.prueba.control.servicios.Cargo> listacargo(java.lang.String sortF, boolean sortB, java.util.List<java.lang.Integer> range, com.pangea.prueba.control.servicios.Listacargo.Fil fil, java.lang.String cad) {
+        com.pangea.prueba.control.servicios.Practicaservicio port = service_1.getPracticaservicioPort();
+        return port.listacargo(sortF, sortB, range, fil, cad);
+    }
+
+   
+
+    
+
 }

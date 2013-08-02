@@ -19,8 +19,8 @@
                     <h:inputText id="proyectoid" value="#{proyectoController.selected.proyectoid}" title="#{bundle.CreateProyectoTitle_proyectoid}" required="true" requiredMessage="#{bundle.CreateProyectoRequiredMessage_proyectoid}"/>
                     <h:outputLabel value="#{bundle.CreateProyectoLabel_nombre}" for="nombre" />
                     <h:inputText id="nombre" value="#{proyectoController.selected.nombre}" title="#{bundle.CreateProyectoTitle_nombre}" />
-                    <h:outputLabel value="#{bundle.CreateProyectoLabel_empresa}" for="empresa" />
-                    <h:inputText id="empresa" value="#{proyectoController.selected.empresa}" title="#{bundle.CreateProyectoTitle_empresa}" />
+                    <h:outputLabel value="#{bundle.CreateProyectoLabel_descripcion}" for="descripcion" />
+                    <h:inputText id="empresa" value="#{proyectoController.selected.descripcion}" title="#{bundle.CreateProyectoTitle_descripcion}" />
                     <h:outputLabel value="#{bundle.CreateProyectoLabel_empleadoid}" for="empleadoid" />
                     <h:selectOneMenu id="empleadoid" value="#{proyectoController.selected.empleadoid}" title="#{bundle.CreateProyectoTitle_empleadoid}" >
                         <f:selectItems value="#{empleadoController.itemsAvailableSelectOne}"/>

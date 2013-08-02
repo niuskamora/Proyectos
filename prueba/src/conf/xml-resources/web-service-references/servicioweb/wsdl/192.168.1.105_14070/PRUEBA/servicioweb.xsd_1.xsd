@@ -1,0 +1,307 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Metro/2.2.0-1 (tags/2.2.0u1-7139; 2012-06-02T10:55:19+0000) JAXWS-RI/2.2.6-2 JAXWS/2.2 svn-revision#unknown. --><xs:schema xmlns:tns="http://servicio.prueba.pangea.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://servicio.prueba.pangea.com/">
+
+<xs:element name="RegistrosDepartamento" type="tns:RegistrosDepartamento"/>
+
+<xs:element name="RegistrosDepartamentoResponse" type="tns:RegistrosDepartamentoResponse"/>
+
+<xs:element name="RegistrosEmpleado" type="tns:RegistrosEmpleado"/>
+
+<xs:element name="RegistrosEmpleadoResponse" type="tns:RegistrosEmpleadoResponse"/>
+
+<xs:element name="RegistrosProyecto" type="tns:RegistrosProyecto"/>
+
+<xs:element name="RegistrosProyectoResponse" type="tns:RegistrosProyectoResponse"/>
+
+<xs:element name="Registroscargo" type="tns:Registroscargo"/>
+
+<xs:element name="RegistroscargoResponse" type="tns:RegistroscargoResponse"/>
+
+<xs:element name="cargo" type="tns:cargo"/>
+
+<xs:element name="crearCargo" type="tns:crearCargo"/>
+
+<xs:element name="crearCargoResponse" type="tns:crearCargoResponse"/>
+
+<xs:element name="crearDepartameto" type="tns:crearDepartameto"/>
+
+<xs:element name="crearDepartametoResponse" type="tns:crearDepartametoResponse"/>
+
+<xs:element name="crearEmpleado" type="tns:crearEmpleado"/>
+
+<xs:element name="crearEmpleadoResponse" type="tns:crearEmpleadoResponse"/>
+
+<xs:element name="crearProyecto" type="tns:crearProyecto"/>
+
+<xs:element name="crearProyectoResponse" type="tns:crearProyectoResponse"/>
+
+<xs:element name="departamento" type="tns:departamento"/>
+
+<xs:element name="empleado" type="tns:empleado"/>
+
+<xs:element name="hello" type="tns:hello"/>
+
+<xs:element name="helloResponse" type="tns:helloResponse"/>
+
+<xs:element name="listarCargo" type="tns:listarCargo"/>
+
+<xs:element name="listarCargoResponse" type="tns:listarCargoResponse"/>
+
+<xs:element name="listarDepartamento" type="tns:listarDepartamento"/>
+
+<xs:element name="listarDepartamentoResponse" type="tns:listarDepartamentoResponse"/>
+
+<xs:element name="listarEmpleado" type="tns:listarEmpleado"/>
+
+<xs:element name="listarEmpleadoResponse" type="tns:listarEmpleadoResponse"/>
+
+<xs:element name="listarProyecto" type="tns:listarProyecto"/>
+
+<xs:element name="listarProyectoResponse" type="tns:listarProyectoResponse"/>
+
+<xs:element name="proyecto" type="tns:proyecto"/>
+
+<xs:complexType name="crearProyecto">
+<xs:sequence>
+<xs:element name="registroProyecto" type="tns:proyecto" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="proyecto">
+<xs:sequence>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+<xs:element name="empleadoid" type="tns:empleado" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="proyectoid" type="xs:decimal" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="empleado">
+<xs:sequence>
+<xs:element name="apellido" type="xs:string" minOccurs="0"/>
+<xs:element name="cargoid" type="tns:cargo" minOccurs="0"/>
+<xs:element name="departamentoid" type="tns:departamento" minOccurs="0"/>
+<xs:element name="direccion" type="xs:string" minOccurs="0"/>
+<xs:element name="empleadoid" type="xs:decimal" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="sueldo" type="xs:double" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cargo">
+<xs:sequence>
+<xs:element name="cargoid" type="xs:decimal" minOccurs="0"/>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="departamento">
+<xs:sequence>
+<xs:element name="departamentoid" type="xs:decimal" minOccurs="0"/>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="crearProyectoResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="listarProyecto">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="listarProyectoResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="crearEmpleado">
+<xs:sequence>
+<xs:element name="registroEmpleado" type="tns:empleado" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="crearEmpleadoResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="hello">
+<xs:sequence>
+<xs:element name="name" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="helloResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="listarEmpleado">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="listarEmpleadoResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="listarDepartamento">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="listarDepartamentoResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="Registroscargo">
+<xs:sequence>
+<xs:element name="sortF" type="xs:string" minOccurs="0"/>
+<xs:element name="sortB" type="xs:boolean"/>
+<xs:element name="range" type="xs:int" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="fil">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="key" minOccurs="0" type="xs:string"/>
+<xs:element name="value" minOccurs="0" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="cad" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="RegistroscargoResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:cargo" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="listarCargo">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="listarCargoResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="RegistrosEmpleado">
+<xs:sequence>
+<xs:element name="sortF" type="xs:string" minOccurs="0"/>
+<xs:element name="sortB" type="xs:boolean"/>
+<xs:element name="range" type="xs:int" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="fil">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="key" minOccurs="0" type="xs:string"/>
+<xs:element name="value" minOccurs="0" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="cad" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="RegistrosEmpleadoResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:empleado" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="RegistrosDepartamento">
+<xs:sequence>
+<xs:element name="sortF" type="xs:string" minOccurs="0"/>
+<xs:element name="sortB" type="xs:boolean"/>
+<xs:element name="range" type="xs:int" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="fil">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="key" minOccurs="0" type="xs:string"/>
+<xs:element name="value" minOccurs="0" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="cad" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="RegistrosDepartamentoResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:departamento" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="crearCargo">
+<xs:sequence>
+<xs:element name="registroCargo" type="tns:cargo" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="crearCargoResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="RegistrosProyecto">
+<xs:sequence>
+<xs:element name="sortF" type="xs:string" minOccurs="0"/>
+<xs:element name="sortB" type="xs:boolean"/>
+<xs:element name="range" type="xs:int" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="fil">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="key" minOccurs="0" type="xs:string"/>
+<xs:element name="value" minOccurs="0" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="cad" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="RegistrosProyectoResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:proyecto" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="crearDepartameto">
+<xs:sequence>
+<xs:element name="registroDepartamento" type="tns:departamento" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="crearDepartametoResponse">
+<xs:sequence/>
+</xs:complexType>
+</xs:schema>

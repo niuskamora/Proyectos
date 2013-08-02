@@ -5,9 +5,14 @@ import com.pangea.prueba.control.controller.util.JsfUtil;
 import com.pangea.prueba.control.controller.util.PaginationHelper;
 import com.pangea.prueba.control.modelo.entidad.Cargo;
 import com.pangea.prueba.control.modelo.entidad.Departamento;
+import com.pangea.prueba.control.servicio.RegistrosEmpleado.Fil;
+import com.pangea.prueba.control.servicio.RegistrosEmpleado.Fil.Entry;
+import com.pangea.prueba.control.servicio.Servicioweb_Service;
+import com.pangea.prueba.control.servicios.Practicaservicio_Service;
 import com.pangea.prueba.modelo.bean.EmpleadoFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +29,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.xml.ws.WebServiceRef;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
@@ -31,6 +37,10 @@ import org.primefaces.model.SortOrder;
 @ManagedBean(name = "empleadoController")
 @SessionScoped
 public class EmpleadoController implements Serializable {
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/192.168.1.101_15362/aplicacion/practicaservicio.wsdl")
+    private Practicaservicio_Service service_1;
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/192.168.1.105_14070/PRUEBA/servicioweb.wsdl")
+    private Servicioweb_Service service;
 
     private Empleado current;
     private DataModel items = null;
@@ -52,7 +62,7 @@ public class EmpleadoController implements Serializable {
     
    /** DECLARACION LAZY **/
     private List<Empleado> empleados;
-    private LazyDataModel<Empleado> lazyModel;
+    private LazyDataModel<com.pangea.prueba.control.servicio.Empleado> lazyModel;
     private int pagIndex = 0;
     private Map<String, String> fields = new HashMap<String, String>();
     private String sortF = null;
@@ -182,9 +192,27 @@ public class EmpleadoController implements Serializable {
         try {
             current.setCargoid(cargoseleccionado);
             current.setDepartamentoid(departamentoseleccionado);
-            getFacade().create(current);
+            
+            //Para Crear por Servicios Web
+            
+            com.pangea.prueba.control.servicio.Empleado insert=new com.pangea.prueba.control.servicio.Empleado();
+            com.pangea.prueba.control.servicio.Cargo insert2=new com.pangea.prueba.control.servicio.Cargo();
+            com.pangea.prueba.control.servicio.Departamento insert3=new com.pangea.prueba.control.servicio.Departamento();
+            
+            insert.setEmpleadoid(current.getEmpleadoid());
+            insert.setNombre(current.getNombre());
+            insert.setApellido(current.getApellido());
+            insert.setDireccion(current.getDireccion());
+            insert.setSueldo(current.getSueldo().doubleValue());
+            insert2.setCargoid(current.getCargoid().getCargoid());
+            insert.setCargoid(insert2);
+            insert3.setDepartamentoid(current.getDepartamentoid().getDepartamentoid());
+            insert.setDepartamentoid(insert3);
+            this.crearEmpleado(insert);
+
             //Llamo al metodo para que recargue cuando creo uno nuevo
             inicializarLazy();
+            
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("EmpleadoCreated"));
             return prepareCreate();
         } catch (Exception e) {
@@ -291,7 +319,7 @@ public class EmpleadoController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    @FacesConverter(forClass = Empleado.class)
+  @FacesConverter(forClass = Empleado.class)
     public static class EmpleadoControllerConverter implements Converter {
 
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
@@ -404,26 +432,38 @@ public class EmpleadoController implements Serializable {
 
     /** INICIO LAZY**/
     public void inicializarLazy() {
-        lazyModel = new LazyDataModel<Empleado>() {
+        lazyModel = new LazyDataModel<com.pangea.prueba.control.servicio.Empleado>() {
 
             @Override
-            public List<Empleado> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,String> filters) {
+            public List<com.pangea.prueba.control.servicio.Empleado> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,String> filters) {
                 paginacion = pageSize;
-                int cantidad = getFacade().count();
-                if (cantidad > 0) {
-                    pagIndex = first;
-                    fields = filters;
-                    sortF = sortField;
-                    sortB = true;
-                    String cadena = "";
-                    lazyModel.setWrappedData(null);
-                    cantidad = getFacade().count();
-                    lazyModel.setRowCount(cantidad);
-                    return getFacade().findRange(sortF, sortB, new int[]{first, first + pageSize}, filters, cadena);
+                int cantidad = listarEmpleado();
+                
+               if (cantidad > 0) {
+                   pagIndex = first;
+                   fields = filters;
+                   sortF = sortField;
+                   sortB = true;
+                   String cadena = "";
+                   lazyModel.setWrappedData(null);
+                   cantidad = listarEmpleado();
+                   lazyModel.setRowCount(cantidad);
+                   List<Integer> lis= new ArrayList();
+                   lis.add(first);
+                   lis.add(first+pageSize);
+                   Fil algo = new Fil();
+                   for (Map.Entry e : filters.entrySet()) {
+                       Entry otro=new Entry();
+                       
+                       otro.setKey(e.getKey().toString());
+                       otro.setValue(e.getValue().toString());
+                       algo.getEntry().add(otro);
+                   }   
+                   
+                   return registrosEmpleado(sortF, sortB, lis, algo, cadena);
 
-                }
-                return null;
-                // return lazymv;
+               }
+               return null;
             }
         };
 
@@ -439,14 +479,14 @@ public class EmpleadoController implements Serializable {
 
     }
 
-    public LazyDataModel<Empleado> getLazyModel() {
+    public LazyDataModel<com.pangea.prueba.control.servicio.Empleado> getLazyModel() {
         if (lazyModel == null) {
             inicializarLazy();
         }
         return lazyModel;
     }
 
-    public void setLazyModel(LazyDataModel<Empleado> lazyModel) {
+    public void setLazyModel(LazyDataModel<com.pangea.prueba.control.servicio.Empleado> lazyModel) {
         this.lazyModel = lazyModel;
     }
 
@@ -472,9 +512,13 @@ public class EmpleadoController implements Serializable {
             getFacade().remove(eliminar);
             mostrarMensaje(0, "Advertencia", "Se Elimino");
         }
+        else{
+            mostrarMensaje(0, "Advertencia", "NO se Elimino");
+        }
         //Llamo al metodo para que recargue cuando elimino
         inicializarLazy();
-        mostrarMensaje(0, "Advertencia", "NO se Elimino");
+        
+        
     }
     
     public void mostrarMensaje(int _opcMensaje, String _cabeceraMensaje, String _cuerpomensaje) {
@@ -498,4 +542,20 @@ public class EmpleadoController implements Serializable {
             }
         }
     }
+
+    private void crearEmpleado(com.pangea.prueba.control.servicio.Empleado registroEmpleado) {
+        com.pangea.prueba.control.servicio.Servicioweb port = service.getServiciowebPort();
+        port.crearEmpleado(registroEmpleado);
+    }
+
+    private java.util.List<com.pangea.prueba.control.servicio.Empleado> registrosEmpleado(java.lang.String sortF, boolean sortB, java.util.List<java.lang.Integer> range, com.pangea.prueba.control.servicio.RegistrosEmpleado.Fil fil, java.lang.String cad) {
+        com.pangea.prueba.control.servicio.Servicioweb port = service.getServiciowebPort();
+        return port.registrosEmpleado(sortF, sortB, range, fil, cad);
+    }
+
+    private int listarEmpleado() {
+        com.pangea.prueba.control.servicio.Servicioweb port = service.getServiciowebPort();
+        return port.listarEmpleado();
+    }
+    
 }

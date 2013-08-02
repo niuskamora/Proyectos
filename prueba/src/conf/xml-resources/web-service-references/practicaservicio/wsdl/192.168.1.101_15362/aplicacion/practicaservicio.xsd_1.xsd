@@ -1,0 +1,438 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Metro/2.2.0-1 (tags/2.2.0u1-7139; 2012-06-02T10:55:19+0000) JAXWS-RI/2.2.6-2 JAXWS/2.2 svn-revision#unknown. --><xs:schema xmlns:tns="http://servicios.practica.pangea.com/" xmlns:ns1="http://jaxb.dev.java.net/array" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://servicios.practica.pangea.com/">
+
+<xs:import namespace="http://jaxb.dev.java.net/array" schemaLocation="http://192.168.1.101:15362/aplicacion/practicaservicio?xsd=2"/>
+
+<xs:element name="cargo" type="tns:cargo"/>
+
+<xs:element name="cep1" type="tns:cep1"/>
+
+<xs:element name="cep1Response" type="tns:cep1Response"/>
+
+<xs:element name="cep2" type="tns:cep2"/>
+
+<xs:element name="cep2Response" type="tns:cep2Response"/>
+
+<xs:element name="contarcargo" type="tns:contarcargo"/>
+
+<xs:element name="contarcargoResponse" type="tns:contarcargoResponse"/>
+
+<xs:element name="contardepartamento" type="tns:contardepartamento"/>
+
+<xs:element name="contardepartamentoResponse" type="tns:contardepartamentoResponse"/>
+
+<xs:element name="contarempleado" type="tns:contarempleado"/>
+
+<xs:element name="contarempleadoResponse" type="tns:contarempleadoResponse"/>
+
+<xs:element name="contarproyecto" type="tns:contarproyecto"/>
+
+<xs:element name="contarproyectoResponse" type="tns:contarproyectoResponse"/>
+
+<xs:element name="departamento" type="tns:departamento"/>
+
+<xs:element name="descripcion" type="tns:descripcion"/>
+
+<xs:element name="descripcionResponse" type="tns:descripcionResponse"/>
+
+<xs:element name="edc1" type="tns:edc1"/>
+
+<xs:element name="edc1Response" type="tns:edc1Response"/>
+
+<xs:element name="edc2" type="tns:edc2"/>
+
+<xs:element name="edc2Response" type="tns:edc2Response"/>
+
+<xs:element name="empleado" type="tns:empleado"/>
+
+<xs:element name="hello" type="tns:hello"/>
+
+<xs:element name="helloResponse" type="tns:helloResponse"/>
+
+<xs:element name="insertarCargo" type="tns:insertarCargo"/>
+
+<xs:element name="insertarCargoResponse" type="tns:insertarCargoResponse"/>
+
+<xs:element name="insertarDepartamento" type="tns:insertarDepartamento"/>
+
+<xs:element name="insertarDepartamentoResponse" type="tns:insertarDepartamentoResponse"/>
+
+<xs:element name="insertarEmpleado" type="tns:insertarEmpleado"/>
+
+<xs:element name="insertarEmpleadoResponse" type="tns:insertarEmpleadoResponse"/>
+
+<xs:element name="insertarProyecto" type="tns:insertarProyecto"/>
+
+<xs:element name="insertarProyectoResponse" type="tns:insertarProyectoResponse"/>
+
+<xs:element name="largo" type="tns:largo"/>
+
+<xs:element name="largoResponse" type="tns:largoResponse"/>
+
+<xs:element name="listacargo" type="tns:listacargo"/>
+
+<xs:element name="listacargoResponse" type="tns:listacargoResponse"/>
+
+<xs:element name="listadepartamento" type="tns:listadepartamento"/>
+
+<xs:element name="listadepartamentoResponse" type="tns:listadepartamentoResponse"/>
+
+<xs:element name="listaempleado" type="tns:listaempleado"/>
+
+<xs:element name="listaempleadoResponse" type="tns:listaempleadoResponse"/>
+
+<xs:element name="listaproyecto" type="tns:listaproyecto"/>
+
+<xs:element name="listaproyectoResponse" type="tns:listaproyectoResponse"/>
+
+<xs:element name="listar" type="tns:listar"/>
+
+<xs:element name="listarResponse" type="tns:listarResponse"/>
+
+<xs:element name="proyecto" type="tns:proyecto"/>
+
+<xs:element name="psd1" type="tns:psd1"/>
+
+<xs:element name="psd1Response" type="tns:psd1Response"/>
+
+<xs:element name="psg1" type="tns:psg1"/>
+
+<xs:element name="psg1Response" type="tns:psg1Response"/>
+
+<xs:complexType name="listaempleado">
+<xs:sequence>
+<xs:element name="sortF" type="xs:string" minOccurs="0"/>
+<xs:element name="sortB" type="xs:boolean"/>
+<xs:element name="range" type="xs:int" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="fil">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="key" minOccurs="0" type="xs:string"/>
+<xs:element name="value" minOccurs="0" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="cad" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="listaempleadoResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:empleado" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="empleado">
+<xs:sequence>
+<xs:element name="apellido" type="xs:string" minOccurs="0"/>
+<xs:element name="cargoid" type="tns:cargo" minOccurs="0"/>
+<xs:element name="departamentoid" type="tns:departamento" minOccurs="0"/>
+<xs:element name="direccion" type="xs:string" minOccurs="0"/>
+<xs:element name="empleadoid" type="xs:decimal" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="sueldo" type="xs:decimal" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cargo">
+<xs:sequence>
+<xs:element name="cargoid" type="xs:decimal" minOccurs="0"/>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+<xs:element name="empleadoList" type="tns:empleado" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="departamento">
+<xs:sequence>
+<xs:element name="departamentoid" type="xs:decimal" minOccurs="0"/>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="listaproyecto">
+<xs:sequence>
+<xs:element name="sortF" type="xs:string" minOccurs="0"/>
+<xs:element name="sortB" type="xs:boolean"/>
+<xs:element name="range" type="xs:int" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="fil">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="key" minOccurs="0" type="xs:string"/>
+<xs:element name="value" minOccurs="0" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="cad" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="listaproyectoResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:proyecto" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="proyecto">
+<xs:sequence>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+<xs:element name="empleadoid" type="tns:empleado" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="proyectoid" type="xs:decimal" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="insertarEmpleado">
+<xs:sequence>
+<xs:element name="registroEmpleado" type="tns:empleado" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="insertarEmpleadoResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="hello">
+<xs:sequence>
+<xs:element name="name" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="helloResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="listadepartamento">
+<xs:sequence>
+<xs:element name="sortF" type="xs:string" minOccurs="0"/>
+<xs:element name="sortB" type="xs:boolean"/>
+<xs:element name="range" type="xs:int" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="fil">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="key" minOccurs="0" type="xs:string"/>
+<xs:element name="value" minOccurs="0" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="cad" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="listadepartamentoResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:departamento" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="listacargo">
+<xs:sequence>
+<xs:element name="sortF" type="xs:string" minOccurs="0"/>
+<xs:element name="sortB" type="xs:boolean"/>
+<xs:element name="range" type="xs:int" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="fil">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="key" minOccurs="0" type="xs:string"/>
+<xs:element name="value" minOccurs="0" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="cad" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="listacargoResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:cargo" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="listar">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="listarResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:cargo" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="contarproyecto">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="contarproyectoResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="contarcargo">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="contarcargoResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="edc2">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="edc2Response">
+<xs:sequence>
+<xs:element name="return" type="ns1:stringArray" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="insertarProyecto">
+<xs:sequence>
+<xs:element name="registroProyecto" type="tns:proyecto" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="insertarProyectoResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="psd1">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="psd1Response">
+<xs:sequence>
+<xs:element name="return" type="ns1:stringArray" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="edc1">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="edc1Response">
+<xs:sequence>
+<xs:element name="return" type="ns1:stringArray" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="insertarDepartamento">
+<xs:sequence>
+<xs:element name="registroDepartamento" type="tns:departamento" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="insertarDepartamentoResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="largo">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="largoResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:departamento" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="insertarCargo">
+<xs:sequence>
+<xs:element name="registroCargo" type="tns:cargo" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="insertarCargoResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="contarempleado">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="contarempleadoResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="psg1">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="psg1Response">
+<xs:sequence>
+<xs:element name="return" type="xs:decimal" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="contardepartamento">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="contardepartamentoResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cep2">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="cep2Response">
+<xs:sequence>
+<xs:element name="return" type="ns1:stringArray" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cep1">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="cep1Response">
+<xs:sequence>
+<xs:element name="return" type="ns1:stringArray" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="descripcion">
+<xs:sequence>
+<xs:element name="name" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="descripcionResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:cargo" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

@@ -1,25 +1,31 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Pagina Principal . Prueba de Servicios</title>
         <h:outputStylesheet name="css/jsfcrud.css"/>
     </h:head>
     <h:body>
-        Hello from Facelets
-        <br />
-        <h:link outcome="/cargo/List" value="Show All Cargo Items"/>
-        <br />
-        <h:link outcome="/departamento/List" value="Show All Departamento Items"/>
-        <br />
-        <h:link outcome="/empleado/List" value="Show All Empleado Items"/>
-        <br />
-        <h:link outcome="/proyecto/List" value="Show All Proyecto Items"/>
+        <h:form>  
+            <h:head> Pagina Principal........Puebas con Servidores Web </h:head>
+            <p:growl id="messages" autoUpdate="true"/>  
+
+            <p:panelMenu style="width:500px" >  
+                <p:submenu label="Tablas Maestras">  
+                    <p:menuitem value="Cargo" outcome="/cargo/List"/> 
+                    <p:menuitem value="Departamento" outcome="/departamento/List"/> 
+
+                </p:submenu>  
+                <p:submenu label="Tablas Dependientes">  
+                    <p:menuitem value="Empleado" outcome="/empleado/List"/> 
+                    <p:menuitem value="Proyecto" outcome="/proyecto/List"/> 
+                </p:submenu>  
+                <p:separator />  
+            </p:panelMenu>  
+
+        </h:form>  
+
     </h:body>
-
-
-
-
 </html>
-

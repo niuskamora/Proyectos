@@ -3,9 +3,13 @@ package com.pangea.prueba.control.controller;
 import com.pangea.prueba.control.modelo.entidad.Departamento;
 import com.pangea.prueba.control.controller.util.JsfUtil;
 import com.pangea.prueba.control.controller.util.PaginationHelper;
+import com.pangea.prueba.control.servicio.RegistrosDepartamento.Fil;
+import com.pangea.prueba.control.servicio.RegistrosDepartamento.Fil.Entry;
+import com.pangea.prueba.control.servicio.Servicioweb_Service;
 import com.pangea.prueba.modelo.bean.DepartamentoFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +25,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.xml.ws.WebServiceRef;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
@@ -28,6 +33,8 @@ import org.primefaces.model.SortOrder;
 @ManagedBean(name = "departamentoController")
 @SessionScoped
 public class DepartamentoController implements Serializable {
+   @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/192.168.1.105_14070/PRUEBA/servicioweb.wsdl")
+    private Servicioweb_Service service;
 
     private Departamento current;
     private DataModel items = null;
@@ -41,7 +48,7 @@ public class DepartamentoController implements Serializable {
     
     /** DECLARACION LAZY **/
     private List<Departamento> departamentos;
-    private LazyDataModel<Departamento> lazyModel;
+    private LazyDataModel<com.pangea.prueba.control.servicio.Departamento> lazyModel;
     private int pagIndex = 0;
     private Map<String, String> fields = new HashMap<String, String>();
     private String sortF = null;
@@ -129,9 +136,17 @@ public class DepartamentoController implements Serializable {
 
     public String create() {
         try {
-            getFacade().create(current);
+            
+            //Para Crear por Servicios Web
+            com.pangea.prueba.control.servicio.Departamento insert=new com.pangea.prueba.control.servicio.Departamento();
+            insert.setDepartamentoid(current.getDepartamentoid());
+            insert.setNombre(current.getNombre());
+            insert.setDescripcion(current.getDescripcion());
+            this.crearDepartameto(insert);
+            
             //Llamo al metodo para que recargue cuando creo uno nuevo
             inicializarLazy();
+            
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("DepartamentoCreated"));
             return prepareCreate();
         } catch (Exception e) {
@@ -278,26 +293,38 @@ public class DepartamentoController implements Serializable {
     
     /** INICIO LAZY**/
     public void inicializarLazy() {
-        lazyModel = new LazyDataModel<Departamento>() {
+        lazyModel = new LazyDataModel<com.pangea.prueba.control.servicio.Departamento>() {
 
             @Override
-            public List<Departamento> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,String> filters) {
+            public List<com.pangea.prueba.control.servicio.Departamento> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,String> filters) {
                 paginacion = pageSize;
-                int cantidad = getFacade().count();
-                if (cantidad > 0) {
-                    pagIndex = first;
-                    fields = filters;
-                    sortF = sortField;
-                    sortB = true;
-                    String cadena = "";
-                    lazyModel.setWrappedData(null);
-                    cantidad = getFacade().count();
-                    lazyModel.setRowCount(cantidad);
-                    return getFacade().findRange(sortF, sortB, new int[]{first, first + pageSize}, filters, cadena);
+               int cantidad = listarDepartamento();
+                
+               if (cantidad > 0) {
+                   pagIndex = first;
+                   fields = filters;
+                   sortF = sortField;
+                   sortB = true;
+                   String cadena = "";
+                   lazyModel.setWrappedData(null);
+                   cantidad = listarDepartamento();
+                   lazyModel.setRowCount(cantidad);
+                   List<Integer> lis= new ArrayList();
+                   lis.add(first);
+                   lis.add(first+pageSize);
+                   Fil algo = new Fil();
+                   for (Map.Entry e : filters.entrySet()) {
+                       Entry otro=new Entry();
+                       
+                       otro.setKey(e.getKey().toString());
+                       otro.setValue(e.getValue().toString());
+                       algo.getEntry().add(otro);
+                   }   
+                   
+                   return registrosDepartamento(sortF, sortB, lis, algo, cadena);
 
-                }
-                return null;
-                // return lazymv;
+               }
+               return null;
             }
         };
 
@@ -313,14 +340,14 @@ public class DepartamentoController implements Serializable {
 
     }
 
-    public LazyDataModel<Departamento> getLazyModel() {
+    public LazyDataModel<com.pangea.prueba.control.servicio.Departamento> getLazyModel() {
         if (lazyModel == null) {
             inicializarLazy();
         }
         return lazyModel;
     }
 
-    public void setLazyModel(LazyDataModel<Departamento> lazyModel) {
+    public void setLazyModel(LazyDataModel<com.pangea.prueba.control.servicio.Departamento> lazyModel) {
         this.lazyModel = lazyModel;
     }
 
@@ -346,9 +373,11 @@ public class DepartamentoController implements Serializable {
             getFacade().remove(eliminar);
             mostrarMensaje(0, "Advertencia", "Se Elimino");
         }
+        else{
+            mostrarMensaje(0, "Advertencia", "NO se Elimino");
+        }
         //Llamo al metodo para que recargue cuando elimino
         inicializarLazy();
-        mostrarMensaje(0, "Advertencia", "NO se Elimino");
     }
     
     public void mostrarMensaje(int _opcMensaje, String _cabeceraMensaje, String _cuerpomensaje) {
@@ -371,5 +400,20 @@ public class DepartamentoController implements Serializable {
                 break;
             }
         }
+    }
+
+   private void crearDepartameto(com.pangea.prueba.control.servicio.Departamento registroDepartamento) {
+        com.pangea.prueba.control.servicio.Servicioweb port = service.getServiciowebPort();
+        port.crearDepartameto(registroDepartamento);
+    }
+
+    private java.util.List<com.pangea.prueba.control.servicio.Departamento> registrosDepartamento(java.lang.String sortF, boolean sortB, java.util.List<java.lang.Integer> range, com.pangea.prueba.control.servicio.RegistrosDepartamento.Fil fil, java.lang.String cad) {
+        com.pangea.prueba.control.servicio.Servicioweb port = service.getServiciowebPort();
+        return port.registrosDepartamento(sortF, sortB, range, fil, cad);
+    }
+
+    private int listarDepartamento() {
+        com.pangea.prueba.control.servicio.Servicioweb port = service.getServiciowebPort();
+        return port.listarDepartamento();
     }
 }

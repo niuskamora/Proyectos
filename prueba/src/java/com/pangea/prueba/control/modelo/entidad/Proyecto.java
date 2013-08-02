@@ -34,22 +34,22 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Proyecto.findAll", query = "SELECT p FROM Proyecto p"),
     @NamedQuery(name = "Proyecto.findByProyectoid", query = "SELECT p FROM Proyecto p WHERE p.proyectoid = :proyectoid"),
     @NamedQuery(name = "Proyecto.findByNombre", query = "SELECT p FROM Proyecto p WHERE p.nombre = :nombre"),
-    @NamedQuery(name = "Proyecto.findByEmpresa", query = "SELECT p FROM Proyecto p WHERE p.empresa = :empresa")})
+    @NamedQuery(name = "Proyecto.findByDescripcion", query = "SELECT p FROM Proyecto p WHERE p.descripcion = :descripcion")})
 public class Proyecto implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "INCREMENTO_ID_PROYECTO")
-    @SequenceGenerator(name = "INCREMENTO_ID_PROYECTO", sequenceName = "INCREMENTO_ID_PROYECTO", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PROYECTOSEQ")
+    @SequenceGenerator(name = "PROYECTOSEQ", sequenceName = "PROYECTO_SEQ", allocationSize = 1)
     @Basic(optional = false)
     @Column(name = "PROYECTOID")
     private BigDecimal proyectoid;
-    @Size(max = 100)
+    @Size(max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
-    @Size(max = 50)
-    @Column(name = "EMPRESA")
-    private String empresa;
+    @Size(max = 120)
+    @Column(name = "DESCRIPCION")
+    private String descripcion;
     @JoinColumn(name = "EMPLEADOID", referencedColumnName = "EMPLEADOID")
     @ManyToOne(fetch = FetchType.LAZY)
     private Empleado empleadoid;
@@ -77,12 +77,12 @@ public class Proyecto implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getEmpresa() {
-        return empresa;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setEmpresa(String empresa) {
-        this.empresa = empresa;
+    public void setDescripcion(String empresa) {
+        this.descripcion = empresa;
     }
 
     public Empleado getEmpleadoid() {
